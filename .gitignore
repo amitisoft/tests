@@ -7,3 +7,6 @@ images/
 .vscode
 .idea
 .vs
+!/features/
+!/pages/
+!/stepdefinitions/
