@@ -7,14 +7,14 @@ import * as reporter from 'cucumber-html-reporter';
 import { mkdirp } from 'mkdirp';
 
 defineSupportCode(function ({ registerHandler, registerListener, After, setDefaultTimeout }) {
-    setDefaultTimeout(20 * 1000);
+    setDefaultTimeout(20 * 10000);
     let jsonReports = process.cwd() + "/reports/json";
     let htmlReports = process.cwd() + "/reports/html";
     let targetJson = jsonReports + "/cucumber_report.json";
 
     registerHandler('BeforeFeature', function (event, callback) {
         browser.get(config.baseUrl);
-        setTimeout(callback, 5000);
+        setTimeout(callback, 10000);
     });
 
     After(function (scenario) {

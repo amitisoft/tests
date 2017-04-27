@@ -1,10 +1,11 @@
-Feature: HR can view question manager module 
-
+Feature: HR can view and edit question manager dashboard
+	As a user of Candidate Shortlisting Application
+	I should be able to use Question Manager Dashboard
+	In order to Create/Edit and Mange Questions
 
 Scenario: HR can create question by entering text
-
 	Given I am on the Dashboard page
-	When  I click on question manager module 
+	When  I click on question manager
 	And   I click on create Questions
 	And   I enter text in  create question 
 	And   I enter text for Answer choices
@@ -12,7 +13,7 @@ Scenario: HR can create question by entering text
 	And   I select Dropdown to select module
 	And   I click on save Button 
 	And   I click on save and create new question
-    	Then  I should get the page with Questions fields
+	Then  I should get the page with Questions fields
 
 
 

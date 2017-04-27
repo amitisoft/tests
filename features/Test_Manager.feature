@@ -88,12 +88,12 @@ Feature: TestManager Dashboard
         When I Select an value for category
 		Then I see 	the result of selected category
 
-	Scenario: Search Results by name OR score
-		Given Result Manager view
-        When I Enter the name in search box
-		Then I see 	the result of matching names
-		When I Enter the score in search box
-		Then I see the list of candidates macthing score
-		When I Enter the invalid text in search box
-		Then I see the no results found message
+#	Scenario: Search Results by name OR score
+#		Given Result Manager view
+#        When I Enter the name in search box
+#		Then I see 	the result of matching names
+#		When I Enter the score in search box
+#		Then I see the list of candidates macthing score
+#		When I Enter the invalid text in search box
+#		Then I see the no results found message
 	
