@@ -2,19 +2,24 @@ import { browser, Config } from 'protractor';
 
 export let config: Config = {
 
+    //directConnect     : true,
+
     seleniumAddress: 'http://127.0.0.1:4444/wd/hub',
 
-    baseUrl: 'http://www.google.com',
+    baseUrl: 'http://localhost:4200/hrdashboard',
 
     capabilities: {
         browserName: 'chrome'
     },
 
+    getPageTimeout: 60000,
+    allScriptsTimeout: 500000,
+
     framework: 'custom',
     frameworkPath: require.resolve('protractor-cucumber-framework'),
 
     specs: [
-        '../../features/*.feature'
+        '../../features/Question_Manager.feature'
     ],
 
     onPrepare: () => {
@@ -27,7 +32,6 @@ export let config: Config = {
         compiler: "ts:ts-node/register",
         strict: true,
         format: ['pretty'],
-        require: ['../../stepdefinitions/*.ts', '../../support/*.ts'],
-        //tags: ''
+        require: ['../../stepdefinitions/QuestionManagerSpec.ts', '../../support/*.ts']
     }
 };
