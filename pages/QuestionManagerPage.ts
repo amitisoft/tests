@@ -60,7 +60,7 @@ export class QuestionManager {
     alertVerify() {
 
         browser.sleep(60000).then(function () {
-            console.log(browser.switchTo().alert().getText());
+            //console.log(browser.switchTo().alert().getText());
             return browser.switchTo().alert().accept();
         });
     }

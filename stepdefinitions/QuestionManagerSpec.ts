@@ -75,7 +75,7 @@ defineSupportCode(function ({Given,When,Then}) {
     Then(/^I Verify the new question added$/, () => {
 
         question.showQuestion.click();
-        return question.questionCount();
+        //return question.questionCount();
 
     });
 
@@ -101,9 +101,13 @@ defineSupportCode(function ({Given,When,Then}) {
     });
 
 
-    Then(/^I verify Add button isdisabled$/, () => {
+    Then(/^I verify Add button isdisabled$/, (callback) => {
 
-        return question.submit_Button.elementIsDisabled();
+        question.submit_Button.isEnabled().then(function(enabled){
+            console.log(enabled);
+           //expect(enabled).to.be.eventually.equalto("false");
+        }); return;
+
 
     });
 
