@@ -1,7 +1,7 @@
 /**
  * Created by Amiti on 27-04-2017.
  */
-import {$, element, by, browser, utils} from 'protractor';
+import {$, element, by, browser, utils, $$} from 'protractor';
 import { QuestionManager } from '../pages/QuestionManagerPage';
 import { defineSupportCode,TableDefinition } from 'cucumber';
 
@@ -13,9 +13,9 @@ defineSupportCode(function ({Given,When,Then}) {
 
     Given(/^I am on the Dashboard page$/, () => {
 
-        //console.log(question.hr_dashboard.isPresent());
-        //return expect(question.hr_dashboard.isPresent()).to.be.true;
-
+        question.hr_dashboard.isPresent().then(function (isPresent) {
+            return expect(isPresent).to.be.true;
+        });
     });
 
     When(/^I click on question manager$/, () => {
@@ -36,20 +36,20 @@ defineSupportCode(function ({Given,When,Then}) {
 
     });
 
-    When(/^I enter multiple choice Answer$/, (options : TableDefinition) => {
+    When(/^I enter multiple choice Answer$/, (options: TableDefinition) => {
 
         let data = options.hashes();
         for (let i = 1; i < 5; i++) {
 
-             question.EnterOptions('option'+i,data[i-1].answers);
+            question.EnterOptions('option' + i, data[i - 1].answers);
 
         }
     });
 
     When(/^I select the check box for right choices$/, () => {
 
-        question.CorrectOptions(1);
-        question.CorrectOptions(2);
+        question.getCorrectOptions(1).click();
+        question.getCorrectOptions(2).click();
 
 
     });
@@ -70,24 +70,25 @@ defineSupportCode(function ({Given,When,Then}) {
 
         return question.alertVerify();
 
-       });
+    });
 
-    Then(/^I Verify the new question added$/, () => {
+    Then(/^I Verify the question count is updated to "(.*?)"$/, (number) => {
 
         question.showQuestion.click();
-        //return question.questionCount();
-
+        return expect(question.questionTable.count()).to.be.eventually.equal(number);
     });
 
     Then(/^I should get the page with Questions fields$/, () => {
 
-        //browser.pause();
-        //browser.sleep(700000);
-        //return browser.sleep(700000);
+        browser.pause();
+        browser.sleep(700000);
+        return browser.sleep(700000);
 
     });
 
     Given(/^I am on the question manager module$/, () => {
+
+        browser.sleep(70000);
 
         return question.QuestionManager_Tab.click();
 
@@ -101,12 +102,11 @@ defineSupportCode(function ({Given,When,Then}) {
     });
 
 
-    Then(/^I verify Add button isdisabled$/, (callback) => {
+    Then(/^I verify Add button isdisabled$/, () => {
 
-        question.submit_Button.isEnabled().then(function(enabled){
-            console.log(enabled);
-           //expect(enabled).to.be.eventually.equalto("false");
-        }); return;
+        question.submit_Button.isEnabled().then(function (enabled) {
+            return expect(enabled).to.be.false;
+        });
 
 
     });
@@ -118,32 +118,74 @@ defineSupportCode(function ({Given,When,Then}) {
 
     When(/^I add first answer choice$/, () => {
 
-        return question.EnterOptions("option1","answer1_text");
+        return question.EnterOptions("option1", "answer1_text");
     });
 
     When(/^I add all options$/, () => {
 
-        question.EnterOptions("option2","answer2_text");
-        question.EnterOptions("option3","answer3_text");
-        question.EnterOptions("option4","answer4_text");
+        question.EnterOptions("option2", "answer2_text");
+        question.EnterOptions("option3", "answer3_text");
+        question.EnterOptions("option4", "answer4_text");
 
     });
 
     When(/^I slect one correct option$/, () => {
 
-        question.CorrectOptions(2);
+        return question.getCorrectOptions(2).click();
+
+    });
+
+    Then(/^I verify Add button isenabled$/, () => {
+
+        question.submit_Button.isEnabled().then(function (enabled) {
+            return expect(enabled).to.be.true;
+        });
 
     });
 
     When(/^I click on clear Button$/, () => {
 
-        question.clear_Button.click();
+        return question.clear_Button.click();
 
     });
 
-    Then(/^I verify All fields are empty$/, () => {
+    Then(/^I verify Question field is empty$/, () => {
 
-        browser.pause();
+        question.createQuestion.getText().then(function (text) {
+            return expect(text).to.be.empty;
+        });
+    });
+
+    Then(/^I verify Option fields are empty$/, () => {
+
+        for (let i = 1; i < 5; i++) {
+
+            question.getOptions('option' + i).getText().then(function (text) {
+                question.getOptions('option' + i).click();
+                return expect(text).to.be.empty;
+            });
+        }
+    });
+
+    Then(/^I verify check box are empty$/, () => {
+
+        for (let i = 1; i < 5; i++) {
+            question.getCorrectOptions(i).isSelected().then(function (box) {
+                return expect(box).to.be.false;
+            });
+        }
+    });
+
+    Then(/^I verify category combo is empty$/, () => {
+
+        return question.getCategory.getText().then(function (comboText) {
+            return expect(comboText).to.be.empty;
+        });
+    });
+
+    Given(/^show question is selected$/, () => {
+
+        return question.showQuestion.click();
 
     });
 

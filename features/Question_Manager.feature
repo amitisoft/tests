@@ -3,6 +3,7 @@ Feature: HR can view and edit question manager dashboard
 	I should be able to use Question Manager Dashboard
 	In order to Create/Edit and Mange Questions
 
+
 Scenario: HR can create question by entering text
 	Given I am on the Dashboard page
 	When I click on question manager
@@ -15,11 +16,12 @@ Scenario: HR can create question by entering text
 		| Sum is 3   |
 		| Sum is 8   |
 	When I select the check box for right choices
+	When I select the check box for right choices
 	When I select category "Java" from dropdown
 	When I click on Add Button
 	Then I Verify the success alert
-#	Then I Verify the new question added
-	Then I should get the page with Questions fields
+	Then I Verify the question count is updated to "4"
+#	Then I should get the page with Questions fields
 
 
 
@@ -29,38 +31,26 @@ Scenario: HR cannot create question without selecting or entering required field
 	When I click on create question
 	Then I verify Add button isdisabled
 	When I add Quetion text
-	Then I verify Add button isdisabled
-	When I add first answer choice
-	Then I verify Add button isdisabled
-	When I add all options
+ 	Then I verify Add button isdisabled
+    When I add first answer choice
+    Then I verify Add button isdisabled
+    When I add all options
 	Then I verify Add button isdisabled
 	When I select category "QA" from dropdown
-	Then I verify Add button isdisabled
+	Then I verify Add button isenabled
 	When I slect one correct option
 	Then I verify Add button isenabled
 	When I click on clear Button
-	Then I verify All fields are empty
+	Then I verify Question field is empty
+	Then I verify Option fields are empty
+	Then I verify check box are empty
+	Then I verify category combo is empty
 	Then I verify Add button isdisabled
 
-#Scenario: HR cannot create question for missing some of the fields
-
-#	Given I am on the Dashboard page
-#	When  I click on question manager module
-#	When   I click on create Questions
-#	When   I enter text in  create question field
-#	When   I enter text for  three Answer choices
-#	When   I select Dropdown to select module
-#	When   I click on save Button
-#	When   I click on save and create new question
- #   	Then  I should get appropriate message as please enter missing fields
-
-
-
-
-#Scenario: HR can edit the question in Show Question module
+Scenario: HR can edit the question in Show Question module
 	
 
-#	Given I am on the Dashboard page
+	Given show question is selected
 #	Given I am on question manager module
 #	When   click on Show Questions module
 #	When   Select dropdown menu from category to which we want to edit

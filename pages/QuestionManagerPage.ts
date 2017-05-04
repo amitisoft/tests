@@ -1,7 +1,7 @@
 /**
  * Created by Amiti on 27-04-2017.
  */
-import {$, element, by, protractor, promise, Ptor, browser} from 'protractor';
+import {$, element, by, protractor, promise, Ptor, browser, ExpectedConditions, $$} from 'protractor';
 
 export class QuestionManager {
 
@@ -11,18 +11,21 @@ export class QuestionManager {
     public question_Field: any;
     public submit_Button: any;
     public showQuestion: any;
-    public submitAlert: any;
     public clear_Button: any;
+    public getCategory: any;
+    public questionTable: any;
 
     constructor() {
 
-        this.hr_dashboard = element(by.css('.navbar navbar-default'));
+        this.hr_dashboard = element(by.xpath('//amiti-hr-dashboard/amiti-dashboardpanel'));
         this.QuestionManager_Tab = element(by.xpath('//amiti-hr-dashboard/amiti-dashboardpanel/nav/div/div/ul/li[1]/a'));
         this.createQuestion = element(by.buttonText('CREATE QUESTIONS'));
         this.question_Field = element(by.id('question'));
         this.submit_Button = element(by.buttonText('ADD'));
         this.showQuestion = element(by.buttonText('SHOW QUESTIONS'));
-        this.showQuestion = element(by.buttonText('CLEAR'));
+        this.clear_Button = element(by.buttonText('CLEAR'));
+        this.getCategory = element(by.id('singleSelect'));
+        this.questionTable = $$('table tr');
 
     }
 
@@ -32,12 +35,17 @@ export class QuestionManager {
             element(by.name(optionNo)).sendKeys(answer);
 
         });
+    }
+
+    getOptions(optionNo) {
+
+        return element(by.name(optionNo));
 
     }
 
-    CorrectOptions(optionNo) {
+    getCorrectOptions(optionNo) {
 
-        return element(by.id('option' + optionNo + 'IsCorrect')).click();
+        return element(by.id('option' + optionNo + 'IsCorrect'));
 
     }
 
@@ -45,23 +53,21 @@ export class QuestionManager {
 
         let select = element(by.id('singleSelect'));
         return select.$('[value="'+category+'"]').click();
-
-    }
-
-    questionCount() {
-
-        $('.table table-striped tr').then(function (rowCount) {
-            //console.log("Count:" + rowCount);
-        });
-        return;
-
     }
 
     alertVerify() {
 
-        browser.sleep(60000).then(function () {
-            //console.log(browser.switchTo().alert().getText());
+        browser.wait(protractor.ExpectedConditions.alertIsPresent(), 10000).then(function (ispresent) {
             return browser.switchTo().alert().accept();
+        });
+    }
+
+    getAlertText() {
+
+        browser.wait(protractor.ExpectedConditions.alertIsPresent(), 10000).then(function (ispresent) {
+            browser.switchTo().alert().getText().then(function (text) {
+                return text;
+            });
         });
     }
 

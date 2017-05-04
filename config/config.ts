@@ -19,7 +19,7 @@ export let config: Config = {
     frameworkPath: require.resolve('protractor-cucumber-framework'),
 
     specs: [
-        '../../features/Question_Manager.feature'
+        '../../features/*.feature'
     ],
 
     onPrepare: () => {
@@ -32,6 +32,7 @@ export let config: Config = {
         compiler: "ts:ts-node/register",
         strict: true,
         format: ['pretty'],
-        require: ['../../stepdefinitions/QuestionManagerSpec.ts', '../../support/*.ts']
+        require: ['../../stepdefinitions/*.ts', '../../support/*.ts'],
+        //tags: ''
     }
 };
