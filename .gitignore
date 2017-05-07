@@ -2,6 +2,8 @@ node_modules/
 typeScript/
 reports/
 images/
+config/
+support/
 *.js
 .DS_Store
 .vscode

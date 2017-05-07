@@ -14,6 +14,10 @@ export class QuestionManager {
     public clear_Button: any;
     public getCategory: any;
     public questionTable: any;
+    public paperManager: any;
+    public paperName: any;
+    public selectQuestionTable: any;
+    public selectedQuestionTable: any;
 
     constructor() {
 
@@ -26,6 +30,10 @@ export class QuestionManager {
         this.clear_Button = element(by.buttonText('CLEAR'));
         this.getCategory = element(by.id('singleSelect'));
         this.questionTable = $$('table tr');
+        this.paperManager = element(by.buttonText('PAPER MANAGEMENT'));
+        this.paperName = element(by.css('[placeholder="Paper Name:"]'));
+        this.selectQuestionTable = element(by.xpath("//amiti-questionsmanager/div[3]/div/amiti-papermanagement/div[2]/div[1]/div[2]/table/tbody"));
+        this.selectedQuestionTable = element(by.xpath("//amiti-questionsmanager/div[3]/div/amiti-papermanagement/div[2]/div[2]/div/div[5]/table/tbody"));
 
     }
 
@@ -69,6 +77,17 @@ export class QuestionManager {
                 return text;
             });
         });
+    }
+
+    getCategoryItems() {
+
+        return this.getCategory.all(by.tagName('option'));
+    }
+
+    paperManage_SelectCategory(category) {
+
+        let select = element(by.tagName('select'));
+        return select.$('[ng-reflect-ng-value="'+category+'"]').click();
     }
 
 }
