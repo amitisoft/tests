@@ -6,7 +6,7 @@ export let config: Config = {
 
     seleniumAddress: 'http://127.0.0.1:4444/wd/hub',
 
-    baseUrl: 'http://localhost:4200/hrdashboard',
+    baseUrl: 'http://localhost:4200/hrdashboard/qmanager',
 
     capabilities: {
         browserName: 'chrome'
@@ -19,7 +19,7 @@ export let config: Config = {
     frameworkPath: require.resolve('protractor-cucumber-framework'),
 
     specs: [
-        '../../features/*.feature'
+        '../../features/Question_Manager.feature'
     ],
 
     onPrepare: () => {
@@ -32,7 +32,7 @@ export let config: Config = {
         compiler: "ts:ts-node/register",
         strict: true,
         format: ['pretty'],
-        require: ['../../stepdefinitions/*.ts', '../../support/*.ts'],
-        //tags: ''
+        require: ['../../stepdefinitions/QuestionManagerSpec.ts', '../../support/*.ts'],
+        tags: '@CreateQuestion or @CannotCreateQuestion or @CreatePaper or @CreateMultipleCatPaper '
     }
 };

@@ -18,6 +18,8 @@ export class QuestionManager {
     public paperName: any;
     public selectQuestionTable: any;
     public selectedQuestionTable: any;
+    public save_Button: any;
+    public Selection_Count: any;
 
     constructor() {
 
@@ -31,16 +33,18 @@ export class QuestionManager {
         this.getCategory = element(by.id('singleSelect'));
         this.questionTable = $$('table tr');
         this.paperManager = element(by.buttonText('PAPER MANAGEMENT'));
-        this.paperName = element(by.css('[placeholder="Paper Name:"]'));
+        this.paperName = element(by.css('[placeholder="Paper Name"]'));
         this.selectQuestionTable = element(by.xpath("//amiti-questionsmanager/div[3]/div/amiti-papermanagement/div[2]/div[1]/div[2]/table/tbody"));
         this.selectedQuestionTable = element(by.xpath("//amiti-questionsmanager/div[3]/div/amiti-papermanagement/div[2]/div[2]/div/div[5]/table/tbody"));
+        this.save_Button = element(by.buttonText('SAVE'));
+        this.Selection_Count = element(by.xpath('//amiti-papermanagement/div[2]/div[1]/div[1]/div/div/div[2]/p'));
 
     }
 
     EnterOptions(optionNo, answer) {
 
-        element(by.name(optionNo)).click().then(function () {
-            element(by.name(optionNo)).sendKeys(answer);
+        element(by.name(optionNo+"Value")).click().then(function () {
+            element(by.name(optionNo+"Value")).sendKeys(answer);
 
         });
     }
@@ -63,20 +67,22 @@ export class QuestionManager {
         return select.$('[value="'+category+'"]').click();
     }
 
-    alertVerify() {
+    acceptAlert() {
 
-        browser.wait(protractor.ExpectedConditions.alertIsPresent(), 10000).then(function (ispresent) {
+        browser.wait(protractor.ExpectedConditions.alertIsPresent(), 60000).then(function (ispresent) {
             return browser.switchTo().alert().accept();
         });
     }
 
-    getAlertText() {
+    getAlertText() : any {
 
         browser.wait(protractor.ExpectedConditions.alertIsPresent(), 10000).then(function (ispresent) {
-            browser.switchTo().alert().getText().then(function (text) {
-                return text;
+            browser.sleep(10000).then(function () {
+                browser.switchTo().alert().getText().then(function (text) {
+                    return text;
+                });
             });
-        });
+       });
     }
 
     getCategoryItems() {

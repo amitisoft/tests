@@ -1,15 +1,19 @@
 /**
  * Created by Amiti on 27-04-2017.
  */
-import {$, element, by, browser, utils, $$} from 'protractor';
+import {$, element, by, browser, utils, $$, protractor} from 'protractor';
 import { QuestionManager } from '../pages/QuestionManagerPage';
 import { defineSupportCode,TableDefinition } from 'cucumber';
+
 
 let chai = require('chai').use(require('chai-as-promised'));
 let expect = chai.expect;
 
 defineSupportCode(function ({Given,When,Then}) {
+
     let question: QuestionManager = new QuestionManager();
+
+
 
     Given(/^I am on the Dashboard page$/, () => {
 
@@ -68,7 +72,7 @@ defineSupportCode(function ({Given,When,Then}) {
 
     Then(/^I Verify the success alert$/, () => {
 
-        return question.alertVerify();
+        return question.acceptAlert();
 
     });
 
@@ -236,9 +240,9 @@ defineSupportCode(function ({Given,When,Then}) {
         return question.paperManager.click();
     });
 
-    When(/^I enter text for paper name$/, () => {
+    When(/^I enter paper name as "(.*?)"$/, (paperName) => {
 
-        return question.paperName.sendKeys("Paper 1");
+        return question.paperName.sendKeys(paperName);
     });
 
     When(/^I select "(.*?)" category$/, (category) => {
@@ -247,22 +251,56 @@ defineSupportCode(function ({Given,When,Then}) {
 
     });
 
-    When(/^I select set of questions for paper$/, (selection : TableDefinition) => {
+    Then(/^I select set of questions for paper and verify$/, (selection : TableDefinition) => {
 
         //element(by.xpath('//amiti-papermanagement/div[2]/div[1]/div[2]/table/thead/tr')).all(by.tagName('th'));
         let data = selection.hashes();
         for (let i = 0; i < selection.rows().length; i++) {
             question.selectQuestionTable.all(by.xpath("//tr["+data[i].optionNo+"]/td[1]/input")).click();
+
             question.selectQuestionTable.all(by.xpath("//tr["+data[i].optionNo+"]/td[1]/input")).getAttribute("data-questionname").then(function (tableSelect) {
                 question.selectedQuestionTable.all(by.xpath("//tr["+(i+1)+"]/td[2]")).getText().then(function (tableSelected) {
+                    expect(question.Selection_Count.getText()).to.be.eventually.equals("Questions selected: "+(i+1)+" - Out Of 30");
                     return expect(tableSelected.toString()).to.eql((i+1)+","+tableSelect);
                 });
-           });
+            });
         }
     });
 
-    Then(/^I verify selected question$/, () => {
+    When(/^I click on save button$/, () => {
 
-        return console.log("Succesfully verified");
+        return  question.save_Button.click();
     });
+
+    Then(/^I verify the alert message "(.*?)"$/, (message) => {
+
+        return browser.sleep(60000).then(function () {
+            browser.switchTo().alert().then(function (alert) {
+                expect(alert.getText()).to.be.eventually.equals(message);
+            });
+        });
+    });
+
+    Then(/^I accept the alert$/, () => {
+
+        return question.acceptAlert();
+    });
+
+    Then(/^I select set of questions for paper from different category and verify$/, (selection : TableDefinition) => {
+
+        //element(by.xpath('//amiti-papermanagement/div[2]/div[1]/div[2]/table/thead/tr')).all(by.tagName('th'));
+        let data = selection.hashes();
+        for (let i = 0; i < selection.rows().length; i++) {
+            question.paperManage_SelectCategory(data[i].Category);
+            question.selectQuestionTable.all(by.xpath("//tr["+data[i].optionNo+"]/td[1]/input")).click();
+
+            question.selectQuestionTable.all(by.xpath("//tr["+data[i].optionNo+"]/td[1]/input")).getAttribute("data-questionname").then(function (tableSelect) {
+                question.selectedQuestionTable.all(by.xpath("//tr["+(i+1)+"]/td[2]")).getText().then(function (tableSelected) {
+                    expect(question.Selection_Count.getText()).to.be.eventually.equals("Questions selected: "+(i+1)+" - Out Of 30");
+                    return expect(tableSelected.toString()).to.eql((i+1)+","+tableSelect);
+                });
+            });
+        }
+    });
+
 });

@@ -3,7 +3,7 @@ Feature: HR can view and edit question manager dashboard
 	I should be able to use Question Manager Dashboard
 	In order to Create/Edit and Mange Questions
 
-#@start
+@CreateQuestion
 Scenario: HR can create question by entering text
 	Given I am on the Dashboard page
 	When I click on question manager
@@ -23,6 +23,7 @@ Scenario: HR can create question by entering text
 	#Then I Verify the question count is updated to 4
 
 
+#@CannotCreateQuestion
 Scenario: HR cannot create question without selecting or entering required fields
 	Given I am on the question manager module
 	When I click on create question
@@ -45,7 +46,7 @@ Scenario: HR cannot create question without selecting or entering required field
 	Then I verify Add button isdisabled
 
 
-
+@EditQuestion
 Scenario: HR can edit the question in Show Question module
 	Given I click on Show Questions module
 	Then  I verify available options in category dropdown
@@ -89,13 +90,13 @@ Scenario: HR can filter the question upon category in Show Question module
 #   Then I Verify the questions are filtered upon selected category
 
 
-@test
-Scenario: HR can create paper of multiple categories in question manager
+@CreatePaper
+Scenario: HR can create paper of single categories in question manager
 	Given I am on the question manager module
 	When I click on paper management module
-	When I enter text for paper name
+	When I enter paper name as "Paper1"
 	When I select "JavaScript" category
-	When I select set of questions for paper
+	Then I select set of questions for paper and verify
 		| optionNo |
 		| 1        |
 		| 2        |
@@ -108,20 +109,33 @@ Scenario: HR can create paper of multiple categories in question manager
 		| 12       |
 		| 13       |
 		| 15       |
-	Then I verify selected question
-#	When  I click on save button
-#	Then  I verify the message added
+	When I click on save button
+    Then I verify the alert message "Paper saved Asuccessfully."
+    Then I accept the alert
 
 
-#Scenario: HR can create paper of single category in question manager
-#	Given I am on the question manager module
-#	When  I click on paper management module
-#	When  I enter text for paper name
-#	When  I select category
-#	When  I select questions
-#	Then  I verify selected question
-#	When  I click on save button
-#	Then  I verify the message added
+@CreateMultipleCatPaper
+Scenario: HR can create paper of multiple category in question manager
+  Given I am on the question manager module
+  When I click on paper management module
+  When I enter paper name as "Paper2"
+  Then I select set of questions for paper from different category and verify
+    | optionNo | Category   |
+    | 2        | Java       |
+    | 4        | QA         |
+    | 4        | JavaScript |
+    | 6        | JavaScript |
+    | 6        | QA         |
+    | 1        | Java       |
+    | 9        | Java       |
+    | 11       | QA         |
+    | 12       | Java       |
+    | 11       | Java       |
+    | 15       | JavaScript |
+  When I click on save button
+  Then I verify the alert message "Paper saved successfully."
+  Then I accept the alert
+
 
 
 
